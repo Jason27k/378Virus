@@ -1,2 +1,2 @@
 # 378Virus
-Virus do not run outside a VM
+Do not run virus outside a VM
